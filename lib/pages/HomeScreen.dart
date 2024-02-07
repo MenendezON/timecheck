@@ -56,6 +56,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     final dim = MediaQuery.of(context).size;
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive, overlays: []);
+
     return Scaffold(
       backgroundColor: Colors.blueGrey,
       body: _buildUI(dim), // This trailing comma makes auto-formatting nicer for build methods.

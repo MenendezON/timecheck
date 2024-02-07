@@ -79,7 +79,7 @@ class _QRCodeScreenState extends State<QRCodeScreen> {
             _dbTimesheet = DatabaseTimesheetService();
             validEntry.then((result) {
               if (result.isEmpty) {
-                validEntry = _dbTimesheet.insertData(code);
+                validEntry = _dbTimesheet.addOrUpdateTimeSheet(code);
               }
             });
             Navigator.of(context).pushReplacement(
