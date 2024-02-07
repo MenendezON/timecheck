@@ -58,7 +58,6 @@ class _QRCodeScreenState extends State<QRCodeScreen> {
                   return Container();
                 },
               )
-
         ],
       ),
     );
@@ -72,7 +71,7 @@ class _QRCodeScreenState extends State<QRCodeScreen> {
         if (employee != null) {
           if (employee.status == 'admin') {
             Navigator.of(context).pushReplacement(
-              MaterialPageRoute(builder: (context) => const AdminScreen()),
+              MaterialPageRoute(builder: (context) => AdminScreen()),
             );
           } else {
             showNotification(context, "Level 0");

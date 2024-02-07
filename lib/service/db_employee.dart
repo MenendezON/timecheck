@@ -27,6 +27,27 @@ class DatabaseEmployeeService {
     });
   }
 
+
+  Stream<List<Employee>> getEmployees() {
+    return _employees.snapshots().map((snapshot) {
+      return snapshot.docs.map((doc) {
+        return Employee.fromMap(doc.id, doc.data() as Map<String, dynamic>);
+      }).toList();
+    });
+  }
+
+  Stream<List<Employee>> searchEmployees(String searchTerm) {
+    return _employees
+        .where('firstName', isGreaterThanOrEqualTo: searchTerm)
+        .where('firstName', isLessThan: searchTerm + 'z')
+        .snapshots()
+        .map((snapshot) {
+      return snapshot.docs.map((doc) {
+        return Employee.fromMap(doc.id, doc.data() as Map<String, dynamic>);
+      }).toList();
+    });
+  }
+
   Stream<Employee?> getEmployeeById(String employeeId) {
     DocumentReference employeeRef = _employees.doc(employeeId);
 

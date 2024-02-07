@@ -14,7 +14,7 @@ Future<void> main() async {
   runApp(MaterialApp(
     routes: {
       '/': (context) => const HomeScreen(),
-      '/admin': (context) => const AdminScreen(),
+      '/admin': (context) => AdminScreen(),
       '/qrcode': (context) => const QRCodeScreen(),
     },
   )
