@@ -26,9 +26,8 @@ class _QRCodeScreenState extends State<QRCodeScreen> {
   Barcode? result;
   QRViewController? controller;
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
-
+  late DatabaseTimesheetService _dbTimesheet;
   DatabaseEmployeeService dbemployee = DatabaseEmployeeService();
-  DatabaseTimesheetService dbTimesheet = DatabaseTimesheetService();
 
   Future<String> validEntry = Future.value('');
   // In order to get hot reload to work we need to pause the camera if the platform
@@ -67,7 +66,6 @@ class _QRCodeScreenState extends State<QRCodeScreen> {
 
   Future<void> redirectToScreen(String? code) async {
 
-
     //await Future.delayed(const Duration(seconds: 0));
     if(await isExist(dbemployee, code!)) {
       dbemployee.getEmployeeById(code).listen((employee) {
@@ -77,21 +75,13 @@ class _QRCodeScreenState extends State<QRCodeScreen> {
               MaterialPageRoute(builder: (context) => const AdminScreen()),
             );
           } else {
-            if(!checkBeforeUpdate(code)){
-              validEntry.then((result) {
-                if (result.isEmpty) {
-                  validEntry = dbTimesheet.addTimesheetDB(
-                      TimeSheet(
-                        employeeID: code,
-                        arrivalTime: Timestamp.now(),
-                        departureTime: Timestamp.now(),
-                        timegap: 0,
-                      )
-                  );
-                }
-              });
-            }
-
+            showNotification(context, "Level 0");
+            _dbTimesheet = DatabaseTimesheetService();
+            validEntry.then((result) {
+              if (result.isEmpty) {
+                validEntry = _dbTimesheet.insertData(code);
+              }
+            });
             Navigator.of(context).pushReplacement(
               MaterialPageRoute(builder: (context) => const HomeScreen()),
             );
@@ -102,34 +92,6 @@ class _QRCodeScreenState extends State<QRCodeScreen> {
       print('Employee not found');
     }
   }
-
-  bool checkBeforeUpdate(code){
-    bool check = false;
-    String currentNormalDate = DateFormat("yyyy-MM-dd").format(DateTime.now());
-    dbTimesheet.timesheets.listen((List<TimeSheet> timesheets) {
-      timesheets.forEach((element) {
-        if(element.employeeID == code && DateFormat("yyyy-MM-dd").format(getNormalDate(element.arrivalTime)) == currentNormalDate) {
-          print('Date égale');
-          check = true;
-
-          Map<String, dynamic> updatedData = {
-            'departureTime': Timestamp.now(),
-            'timegap': '0',
-            // add more fields as needed
-          };
-
-          dbTimesheet.updateDocument(element.timesheetID, updatedData);
-        }
-
-        print(element.employeeID);
-        print(getNormalDate(element.arrivalTime));
-        print(getNormalDate(element.departureTime));
-        print(element.timegap);
-      });
-    });
-    return check;
-  }
-
 
   DateTime getNormalDate(timestamp){
     DateTime date = DateTime.fromMillisecondsSinceEpoch(

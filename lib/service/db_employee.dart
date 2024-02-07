@@ -54,4 +54,5 @@ class DatabaseEmployeeService {
     // Check if the document exists
     return snapshot.exists;
   }
+
 }

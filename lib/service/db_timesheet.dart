@@ -43,5 +43,44 @@ class DatabaseTimesheetService {
     }
   }
 
+  Future<String> insertData(String code) {
+    return addTimesheetDB(
+        TimeSheet(
+          employeeID: code,
+          arrivalTime: Timestamp.now(),
+          departureTime: Timestamp.now(),
+          timegap: 0,
+        )
+    );
+  }
+
+
+  /*
+  howNotification(context, "Level 1");
+                String currentNormalDate = DateFormat("yyyy-MM-dd").format(DateTime.now());
+                if((element.employeeID == code) && (DateFormat("yyyy-MM-dd").format(getNormalDate(element.arrivalTime)) == currentNormalDate)) {
+                  Map<String, dynamic> updatedData = {
+                    'departureTime': Timestamp.now(),
+                    'timegap': '0',
+                    // add more fields as needed
+                  };
+                  _dbTimesheet.updateDocument(element.timesheetID, updatedData);
+                  showNotification(context, "Document updated successfully!");
+                }else{
+                  validEntry.then((result) {
+                    if (result.isEmpty) {
+                      validEntry = _dbTimesheet.addTimesheetDB(
+                          TimeSheet(
+                            employeeID: code,
+                            arrivalTime: Timestamp.now(),
+                            departureTime: Timestamp.now(),
+                            timegap: 0,
+                          )
+                      );
+                    }
+                  });
+                  showNotification(context, "Good morning!");
+                }
+  */
 
 }
