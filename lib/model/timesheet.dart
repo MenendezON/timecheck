@@ -3,12 +3,21 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class TimeSheet {
   String? timesheetID, employeeID;
   Timestamp? arrivalTime, departureTime;
-  int? timegap;
+  int? timeGap;
 
   TimeSheet({this.timesheetID,
       this.employeeID,
       this.arrivalTime,
       this.departureTime,
-      this.timegap
+      this.timeGap
   });
+
+  Map<String, dynamic> toMap() {
+    return {
+      'employeeID': employeeID,
+      'arrivalTime': arrivalTime,
+      'departureTime': departureTime,
+      'timeGap': timeGap,
+    };
+  }
 }
