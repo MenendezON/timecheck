@@ -1,94 +1,64 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:timecheck/pages/admin/NewEmployeeForm.dart';
+import 'package:timecheck/pages/admin/ListEmployee.dart';
 
-class AdminScreen extends StatelessWidget{
-  const AdminScreen({super.key});
+import '../../model/employee.dart';
+
+class AdminScreen extends StatefulWidget {
+
+  @override
+  State<AdminScreen> createState() => _AdminScreenState();
+}
+
+class _AdminScreenState extends State<AdminScreen> {
+  int _selectedIndex = 0;
+
+  final List<Widget> _pages = [
+    EmployeesScreen(),
+    NewEmployeeForm(),
+  ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Admin dashboard'),
+        title: Text('Employees'),
       ),
-      body: const DataTableExample(),
-    );
-  }
-
-}
-
-class DataTableExample extends StatelessWidget {
-  const DataTableExample({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-
-    return LayoutBuilder(
-      builder: (context, constraints) => SingleChildScrollView(
-        child: Column(
+      drawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
           children: [
-            const Text('My Text'),
-            Container(
-              alignment: Alignment.topLeft,
-              child: SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: ConstrainedBox(
-                  constraints: BoxConstraints(minWidth: constraints.minWidth),
-                  child: DataTable(
-                    columns: const <DataColumn>[
-                      DataColumn(
-                        label: Expanded(
-                          child: Text(
-                            'Namehhhhhhhhhhhhhhhhhhhhh',
-                            style: TextStyle(fontStyle: FontStyle.italic),
-                          ),
-                        ),
-                      ),
-                      DataColumn(
-                        label: Expanded(
-                          child: Text(
-                            'Namehhhhhhhhhhhhhhhhhhhhh',
-                            style: TextStyle(fontStyle: FontStyle.italic),
-                          ),
-                        ),
-                      ),
-                      DataColumn(
-                        label: Expanded(
-                          child: Text(
-                            'Namehhhhhhhhhhhhhhhhhhhhh',
-                            style: TextStyle(fontStyle: FontStyle.italic),
-                          ),
-                        ),
-                      ),
-                    ],
-                    rows: const <DataRow>[
-                      DataRow(
-                        cells: <DataCell>[
-                          DataCell(Text('Sarah')),
-                          DataCell(Text('19')),
-                          DataCell(Text('Student')),
-                        ],
-                      ),
-                      DataRow(
-                        cells: <DataCell>[
-                          DataCell(Text('Janine')),
-                          DataCell(Text('43')),
-                          DataCell(Text('Professor')),
-                        ],
-                      ),
-                      DataRow(
-                        cells: <DataCell>[
-                          DataCell(Text('William')),
-                          DataCell(Text('27')),
-                          DataCell(Text('Associate Professor')),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
+            const DrawerHeader(
+              decoration: BoxDecoration(
+                color: Colors.blue,
               ),
+              child: Text('Drawer Menu'),
+            ),
+            ListTile(
+              title: Text('List of employees'),
+              onTap: () {
+                setState(() {
+                  _selectedIndex = 0;
+                  Navigator.pop(context); // Close the drawer
+                });
+              },
+            ),
+            ListTile(
+              title: Text('Add a new employee'),
+              onTap: () {
+                setState(() {
+                  _selectedIndex = 1;
+                  Navigator.pop(context); // Close the drawer
+                });
+              },
             ),
           ],
         ),
       ),
+      body:  _pages[_selectedIndex],
     );
   }
 }
+
+
